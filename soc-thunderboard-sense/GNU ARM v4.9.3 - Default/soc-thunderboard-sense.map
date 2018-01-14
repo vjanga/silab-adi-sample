@@ -410,6 +410,7 @@ Common symbol       size              file
 
 bleDeviceId         0x2               ./app.o
 user_signals        0x1               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(bglib.c.obj)
+i32SensorY          0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 mbedtls_cipher_supported
                     0x1c              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libmbedtls.a(cipher_wrap.c.obj)
 bg_gap              0x2c              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(gap.c.obj)
@@ -418,7 +419,9 @@ ll_events           0x4               C:\Users\veda\SimplicityStudio\v4_workspac
 msg_sender          0x4               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(bgapi_test_lib.c.obj)
 ll_hci              0x4               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(ll_hci.c.obj)
 UTIL_supplyType     0x1               ./hardware/kit/common/bsp/thunderboard/util_supply.o
+i32SensorX          0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 btlePublicDevAddr   0x6               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(init.c.obj)
+ui32SensorT         0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 ll_channelmap       0x25              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(ll_channelmap.c.obj)
 uiRGBLEDEnable      0x1               ./ui.o
 db_store            0x8               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libpsstore.a(store.c.obj)
@@ -432,6 +435,7 @@ PROTIMER_scheduledRxEnable
 fuseObj             0x74              ./hardware/kit/common/bsp/thunderboard/imu/imu.o
 iaqNotification     0x1               ./iaq.o
 ll_radio            0x28              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(ll_radio.c.obj)
+i32SensorZ          0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 ll                  0x20              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(ll_conn.c.obj)
 used_acls           0x4               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(acl.c.obj)
 gecko_apihandler_rsp
@@ -447,6 +451,7 @@ BUFC_RxBuffer       0x200             C:\Users\veda\SimplicityStudio\v4_workspac
 rcIrCalData         0x12              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\platform\radio\rail_lib\autogen\librail_release\librail_efr32xg1_gcc_release.a(ir_cal.o)
 ll_to_hci_data_event_sender
                     0x1               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(ll_to_hci.c.obj)
+i32SensorT          0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 usch                0x10              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(scheduler.c.obj)
 current_bg_gattdb   0x4               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(gatt_db_minimal.c.obj)
 bg_event_handlers   0x28              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(bg_event.c.obj)
@@ -454,12 +459,16 @@ ll_scan             0x68              C:\Users\veda\SimplicityStudio\v4_workspac
 hci_status          0x28              C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(hci.c.obj)
 address_resolver    0x8               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(gap_resolver.c.obj)
 smp                 0x134             C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(smp.c.obj)
+adxl355Scale        0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 RAIL_ActiveHandle   0x4               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\platform\radio\rail_lib\autogen\librail_release\librail_efr32xg1_gcc_release.a(rail_singleprotocol.o)
 msTickCount         0x4               ./hardware/kit/common/bsp/thunderboard/util.o
 timer_overflow      0x4               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(timer.c.obj)
+ui32SensorX         0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ui32SensorZ         0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 ll_task_callback    0x4               C:\Users\veda\SimplicityStudio\v4_workspace\soc-thunderboard-sense\protocol\bluetooth_2.7\lib\EFR32MG1P\GCC\libbluetooth.a(ll_task.c.obj)
 bluetooth_stack_heap
                     0x19a8            ./radio_ble.o
+ui32SensorY         0x4               ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 
 Discarded input sections
 
@@ -614,6 +623,38 @@ Discarded input sections
  .debug_frame   0x00000000       0xb8 ./hardware/kit/common/bsp/bsp_stk.o
  .ARM.attributes
                 0x00000000       0x37 ./hardware/kit/common/bsp/bsp_stk.o
+ .text          0x00000000        0x0 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .data          0x00000000        0x0 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .bss           0x00000000        0x0 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .text.ADXL355_spiInit
+                0x00000000       0xb0 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .text.delay    0x00000000       0x24 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .text.ADXL355_Init
+                0x00000000      0x3c0 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .text.ADXL355_Start_Sensor
+                0x00000000       0x38 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .text.ADXL355_Stop_Sensor
+                0x00000000       0x38 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .text.ADXL355_Data_Scan
+                0x00000000      0x144 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .text.ADXL355_Acceleration_Data_Conversion
+                0x00000000       0x20 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .rodata        0x00000000       0x18 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .bss.ui32timer_counter
+                0x00000000        0x4 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .debug_info    0x00000000     0x1aa2 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .debug_abbrev  0x00000000      0x336 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .debug_loc     0x00000000      0x68f ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .debug_aranges
+                0x00000000       0x50 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .debug_ranges  0x00000000      0x2c8 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .debug_line    0x00000000      0x5b4 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .debug_str     0x00000000      0xc71 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .comment       0x00000000       0x71 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .debug_frame   0x00000000       0xf0 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ .ARM.attributes
+                0x00000000       0x37 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
+ COMMON         0x00000000       0x24 ./hardware/kit/common/bsp/thunderboard/ADXL355.o
  .text          0x00000000        0x0 ./hardware/kit/common/bsp/thunderboard/bap.o
  .data          0x00000000        0x0 ./hardware/kit/common/bsp/thunderboard/bap.o
  .bss           0x00000000        0x0 ./hardware/kit/common/bsp/thunderboard/bap.o
@@ -3321,6 +3362,7 @@ LOAD ./pti.o
 LOAD ./radio_ble.o
 LOAD ./ui.o
 LOAD ./hardware/kit/common/bsp/bsp_stk.o
+LOAD ./hardware/kit/common/bsp/thunderboard/ADXL355.o
 LOAD ./hardware/kit/common/bsp/thunderboard/bap.o
 LOAD ./hardware/kit/common/bsp/thunderboard/board_4160.o
 LOAD ./hardware/kit/common/bsp/thunderboard/ccs811.o
