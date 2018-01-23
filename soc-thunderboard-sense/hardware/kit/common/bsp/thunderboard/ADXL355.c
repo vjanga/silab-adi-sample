@@ -65,6 +65,7 @@ uint32_t volatile ui32SensorX;
 uint32_t volatile ui32SensorY;
 uint32_t volatile ui32SensorZ;
 uint32_t volatile ui32SensorT;
+uint32_t sensor_data[9];
 
 volatile uint32_t ui32timer_counter = 0;
 
@@ -125,15 +126,25 @@ uint32_t ADXL355_spiInit(void)
   return 0;
 }
 /************************* Global scope functions *****************************/
-
+#define CLOCKSPEED 48000000 //40Mhz clock
 void delay(int delay_ms)
 {
- int volatile i = 40000;
+ int volatile i;//40000 is 1ms for 40Mhz clock.
 
  while(delay_ms--){
-	 i = 40000;
+	 i = CLOCKSPEED * (1/1000); //1ms delay
 	 while(i--);
  }
+}
+
+//API to toggle CS
+void toggle_CS (int del)
+{
+	   delay(del*2);
+	   GPIO_PinOutSet( gpioPortC, 9 );
+
+	   delay(del);
+	   GPIO_PinOutClear(gpioPortC, 9);
 }
 
 /**
@@ -144,8 +155,8 @@ void delay(int delay_ms)
 **/
 int ADXL355_Init(void)
 {
-	uint8_t ui8temp;
-	uint32_t volatile ui32test;
+	//uint8_t ui8temp;
+	int volatile ui32test;
     int volatile i =0;
    //DioPulPin(CSACC_PORT, CSACC_PIN_NUMBER, 0);          /* Disable the internal pull up on CSACC pin */
    //DioOenPin(CSACC_PORT, CSACC_PIN_NUMBER, 1);          /* Set CSACC pin as output */
@@ -164,156 +175,123 @@ int ADXL355_Init(void)
    GPIO_PinModeSet(gpioPortF, 5, gpioModeInput, 0);
 
    //SPI_Write(RANGE, 0x81, 0x00, SPI_WRITE_ONE_REG);          /* Set sensor range within RANGE register */
+
    GPIO_PinOutClear(gpioPortC, 9);
-   delay(2);
-   USART_Tx(USART1, (POWER_CTL<<1)| 0x0);
-   //SPI_Write(POWER_CTL, ui8temp, 0x00, SPI_WRITE_ONE_REG);          /* Write the new value to POWER_CTL register */
+
+   delay(1);
+   GPIO_PinOutSet(gpioPortC, 9);
+   delay(1);
+   GPIO_PinOutClear(gpioPortC, 9);
+
+   //For Writing to a register Bit 0 --> 0
+   //For Reading a register    Bit 0 --> 1
+
+
+   //Initializing the sensor
+   USART_Tx(USART1, (POWER_CTL<<1)| 0x0);// Data sent : 0x5A
    USART_Tx(USART1,0x1 );
 
-
-   USART_Tx(USART1, (RANGE<<1)|0x0);
+   USART_Tx(USART1, (RANGE<<1)|0x0);// Data sent : 0x58
    USART_Tx(USART1, 0x81);
-
    adxl355Scale = 256000.0f;
 
-   USART_Tx(USART1, (FILTER<<1)| 0x0);
-     //SPI_Write(POWER_CTL, ui8temp, 0x00, SPI_WRITE_ONE_REG);          /* Write the new value to POWER_CTL register */
-     USART_Tx(USART1,0x4 );
+   USART_Tx(USART1, (FILTER<<1)| 0x0);// Data sent : 0x50
+   USART_Tx(USART1,0x04 );
 
-   USART_Tx(USART1, (POWER_CTL<<1)| 0x0);
-     //SPI_Write(POWER_CTL, ui8temp, 0x00, SPI_WRITE_ONE_REG);          /* Write the new value to POWER_CTL register */
+   USART_Tx(USART1, (POWER_CTL<<1)| 0x0); // Data sent : 0x5A
    USART_Tx(USART1,0x0 );
-    //i = 40000;
-    //while(i--);
-    //i = 40000;
-    // while(i--);
-   delay(2);
-   GPIO_PinOutSet( gpioPortC, 9 );
 
-   delay(2);
-   GPIO_PinOutClear(gpioPortC, 9);
+   //Making sure buffer got empty
+   while(!((USART1->STATUS)&(0x1<< 6)));
+
+   toggle_CS(350); //100ms
+
 
    /* Quick verification test for boards */
 
-   {
-
-	   /* Quick verification test for boards */
-	   USART_Tx(USART1, (DEVID_AD<<1)| 0x1);
-
+   /* Reading Device ID :  REGISTER ADD :  0x00  VALUE EXPECTED : 0xAD */
+	   USART_Tx(USART1, (DEVID_AD<<1)| 0x1); //Data sent 0x01
 	   USART_Tx(USART1, 0xAA);
-	   //USART_Tx(USART1, 0x00);
+
 	   ui32test = (uint8_t)USART_Rx(USART1);
-	   if(ui32test != 0xAD){
-		 //  return 1;
+	   //if(ui32test != 0xAD)
+
+	   toggle_CS(350); //100ms
+
+
+	   /* Reading Device ID :  REGISTER ADD :  0x01  VALUE EXPECTED : 0x1D */
+	   USART_Tx(USART1, (DEVID_MST<<1)| 0x1); // Data sent : 0x03
+	   USART_Tx(USART1, 0xAA);
+
+	   ui32test = (uint8_t)USART_Rx(USART1);
+	  // if(ui32test != 0xAD)
+	   toggle_CS(350); //100ms
+
+	  	 /* Reading Device ID :  REGISTER ADD :  0x02  VALUE EXPECTED : 0xED */
+	   USART_Tx(USART1, (PARTID<<1)| 0x1); //Data Sent : 0x06
+	   USART_Tx(USART1, 0xAA);
+
+	   ui32test = (uint8_t)USART_Rx(USART1);
+	   //if(ui32test != 0xAD){
+	   toggle_CS(350); //100ms
+
+     delay(4000);
+	// while(1)
+	 {
+
+
+    ADXL355_Start_Sensor();
+	   /* Reading Device ID :  REGISTER ADD :  0x04  Check Bit 0 */
+	   USART_Tx(USART1, (FIFO_STATUS<<1)| 0x1); //Data Sent : 0x09
+	   USART_Tx(USART1, 0xAA);
+
+	   ui32test = (uint8_t)USART_Rx(USART1);
+
+
+
+	   //Wait till DRDY is present
+	   while(!(ui32test & 0x01));
+
+
+	   toggle_CS(350); //100ms
+
+	  	 /* Reading Device ID :  REGISTER ADD :  0x11  FIFO register , read 9 bytes later */
+	   USART_Tx(USART1, 0x23);
+
+	   for(i = 0; i<3;i++)
+	   {
+
+		 USART_Tx(USART1, 0xAA);
+		 sensor_data[i] = (uint8_t)USART_Rx(USART1);
+		 USART_Tx(USART1, 0xAA);
+		 sensor_data[i+1] = (uint8_t)USART_Rx(USART1);
+		 USART_Tx(USART1, 0xAA);
+		 sensor_data[i+2] = (uint8_t)USART_Rx(USART1);
+
 	   }
-	   delay(2);
-	      GPIO_PinOutSet( gpioPortC, 9 );
+	 }
 
-	      delay(2);
-	      GPIO_PinOutClear(gpioPortC, 9);
-	      delay(2);
-	   /* Quick verification test for boards */
-	  	   USART_Tx(USART1, (DEVID_MST<<1)| 0x1);
+	 toggle_CS(350); //
 
-	  	   USART_Tx(USART1, 0xAA);
-	  	   //USART_Tx(USART1, 0x00);
-	  	   ui32test = (uint8_t)USART_Rx(USART1);
-	  	   if(ui32test != 0xAD){
-	  		 //  return 1;
-	  	   }
-	  	 delay(2);
-	  	    GPIO_PinOutSet( gpioPortC, 9 );
+	 /* Reading Device ID :  REGISTER ADD :  0x08  VALUE EXPECTED : 0x1D */
+	 	   USART_Tx(USART1, (XDATA3<<1)| 0x1); // Data sent : 0x11
+	 	   USART_Tx(USART1, 0xAA);
 
-	  	    delay(2);
-	  	    GPIO_PinOutClear(gpioPortC, 9);
-	  	  delay(2);
-	  	 /* Quick verification test for boards */
-		   USART_Tx(USART1, (PARTID<<1)| 0x1);
-
+	 	   ui32test = (uint8_t)USART_Rx(USART1);
+	 	   USART_Tx(USART1, (XDATA2<<1)| 0x1); // Data sent : 0x13
 		   USART_Tx(USART1, 0xAA);
-		   //USART_Tx(USART1, 0x00);
+
 		   ui32test = (uint8_t)USART_Rx(USART1);
-		   if(ui32test != 0xAD){
-			 //  return 1;
-		   }
-		  	 delay(2);
-		  	    GPIO_PinOutSet( gpioPortC, 9 );
+		   USART_Tx(USART1, (XDATA1<<1)| 0x1); // Data sent : 0x15
+	       USART_Tx(USART1, 0xAA);
 
-		  	    delay(2);
-		  	    GPIO_PinOutClear(gpioPortC, 9);
-		  	  delay(2);
-	  // i = 40000;
-	  //  while(i--);
-	  //  i = 40000;
-	  //   while(i--);
-	     delay(2);
-	      GPIO_PinOutSet( gpioPortC, 9 );
-	      delay(2);
-	      GPIO_PinOutClear(gpioPortC, 9);
-	      delay(2);
-   USART_Tx(USART1, 0x23);
+		   ui32test = (uint8_t)USART_Rx(USART1);
+	 	  // if(ui32test != 0xAD)
+	 	   toggle_CS(350); //100ms
 
-   for(i = 0; i<3;i++)
-   {
-
-
-	USART_Tx(USART1, 0xAA);
-     //USART_Tx(USART1, 0x00);
-     ui32test = (uint8_t)USART_Rx(USART1);
-     if(ui32test != 0xAD){
-  	   //return 1;
-     }
-
-
-     USART_Tx(USART1, 0xAA);
-     //USART_Tx(USART1, 0x00);
-     ui32test = (uint8_t)USART_Rx(USART1);
-     if(ui32test != 0xAD){
-  	   //return 1;
-     }
-
-
-     USART_Tx(USART1, 0xAA);
-     //USART_Tx(USART1, 0x00);
-     ui32test = (uint8_t)USART_Rx(USART1);
-     if(ui32test != 0xAD){
-  	   //return 1;
-     }
-   }
-
-}
-
-delay(2);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
-   //i = 40000;
-   //while(i--);
    GPIO_PinOutSet( gpioPortC, 9 );
 
-//   uint32_t volatile ui32test = SPI_Read(DEVID_AD, SPI_READ_ONE_REG);                  /* Read the ID register */
-//   uint32_t volatile ui32test2 = SPI_Read(DEVID_MST, SPI_READ_ONE_REG);                  /* Read the ID register */
-//   uint32_t volatile ui32test3 = SPI_Read(PARTID, SPI_READ_ONE_REG);                  /* Read the ID register */
-//   uint32_t volatile ui32test4 = SPI_Read(REVID, SPI_READ_ONE_REG);                 /* Read the ID register */
+
    return 0;
 }
 
